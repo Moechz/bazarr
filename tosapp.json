@@ -1,0 +1,122 @@
+{
+  "app_id": "bazarrdocker",
+  "title": "Bazarr",
+  "image": "linuxserver/bazarr:1.6.2",
+  "repo_name": "bazarr",
+  "mode": "wrapper",
+  "entrypoint_file": "src/entrypoint.sh",
+  "wrapper_note": "the upstream image boots with the s6-overlay v3 init, whose service manager\nneeds root: with user \"1000:1000\" it cannot start bazarr and the container\nstays up with nothing listening on 6767. TOS forbids root containers, so\nsrc/entrypoint.sh runs exactly the command the s6 service runs, directly as\nthe unprivileged container user.\n",
+  "wrapper_note_readme": "- **Entrypoint wrapper** (not a privilege shim): the image's s6 service manager needs root, so `src/entrypoint.sh` starts Bazarr directly as the unprivileged container user.",
+  "user_mode_text": "上游镜像以 s6 管理服务且需要 root，入口包装改为直接以 uid 1000 运行 Bazarr",
+  "user_mode_cons": "- 上游镜像用 s6-overlay v3 管理服务，`user: \"1000:1000\"` 时 s6 无法启动 bazarr，\n  容器 Up 但 6767 无人监听。因此 `src/entrypoint.sh` 直接执行镜像自带的同一条命令。\n- Bazarr 自身不需要 root：配置、数据库、日志都在 /config 卷内，实测非 root 下首页 200。\n",
+  "container_port": 6767,
+  "platform": "x86_64",
+  "platforms": [
+    "x86_64",
+    "aarch64"
+  ],
+  "category": [
+    "Download"
+  ],
+  "user": "1000:1000",
+  "volumes": [
+    {
+      "host": "/Volume1/DockerAppData/bazarrdocker/config",
+      "container": "/config"
+    },
+    {
+      "host": "/Volume1/DockerAppData/bazarrdocker/media",
+      "container": "/media"
+    }
+  ],
+  "env": {
+    "TZ": "Asia/Shanghai"
+  },
+  "healthcheck": [
+    "CMD-SHELL",
+    "curl -s -o /dev/null http://127.0.0.1:6767/ || exit 1"
+  ],
+  "healthcheck_interval": "30s",
+  "healthcheck_timeout": "10s",
+  "healthcheck_retries": 5,
+  "healthcheck_start_period": "90s",
+  "healthcheck_note": "探测首页 `/`，能应答即健康（首次启动要初始化数据库，`start_period` 90s）。",
+  "auth": "Bazarr",
+  "upstream_url": "https://github.com/morpheus65535/bazarr",
+  "upstream_license": "GPL-3.0",
+  "license": "GPL-3.0",
+  "official": "https://github.com/morpheus65535/bazarr",
+  "help": "https://github.com/Moechz/bazarr/issues",
+  "upstream_version": "1.6.2",
+  "version": "1.6.2-1",
+  "descript": "Bazarr is a subtitle manager for your movie and TV library. It watches the series and films you already track in Sonarr and Radarr, finds matching subtitles in your preferred languages, and keeps them in sync - including forced and hearing-impaired tracks. This package runs the LinuxServer.io Docker image as a non-root container and keeps the configuration, database and logs in the application data folder.",
+  "important": "Requires DockerEngine (installed if missing); add a registry mirror if Docker Hub is unreachable. Open the app and connect Sonarr/Radarr plus at least one subtitle provider. Bazarr writes subtitles next to the video files, so its media folders must be mounted in docker-compose.yml - TOS Docker applications do not get access to shared folders by default. Settings and the database live in the application data folder; back it up before uninstalling with data removal.",
+  "release_note": "1. First release: Bazarr 1.6.2 from the LinuxServer.io Docker Hub image, running as a non-root container. Configuration, database and logs are kept in the application data folder.",
+  "data_notes": "`config/` holds everything Bazarr persists: `config/config.yaml` (settings, API keys, Sonarr/Radarr and provider connections), `db/bazarr.db` (the subtitle database), `cache/` and `log/`. `media/` is the place mounted as `/media` inside the container: point Bazarr's series/movie folders there, or edit docker-compose.yml to mount your own media share after installation.",
+  "design_notes": [
+    "**Non-root by construction.** The s6 service manager of the image needs root, so the wrapper starts Bazarr directly as `1000:1000`; verified on real hardware with `id` inside the container.",
+    "**Fixed image tag `1.6.2`**, Docker Hub only, no `privileged`, no `network_mode: host`, no `cap_add`, no Docker socket.",
+    "**Health check** on the UI itself (`GET /` on port 6767) with a 90 s start period for the first start."
+  ],
+  "limitations": [
+    "Bazarr only writes subtitles to folders it can see inside the container. TOS Docker applications cannot mount shared folders by default: to use your real library, edit `/Volume1/@apps/DockerEngine/application/bazarrdocker/docker-compose.yml` and add the share, or copy media into the `media/` folder of the application data directory.",
+    "Bazarr needs Sonarr and Radarr (or their API endpoints) plus a subtitle provider before it can do anything; none of them are bundled.",
+    "The UI is served over plain HTTP on the LAN. Do not expose the published port to the internet without a TLS reverse proxy."
+  ],
+  "runtime_files": [
+    {
+      "path": "config/config/config.yaml",
+      "purpose": "all settings - Sonarr/Radarr connections, subtitle providers, languages, path mappings",
+      "created": "first start",
+      "growth": "static, rewritten on every settings change",
+      "lifecycle": "never overwritten by the app; it is the whole configuration"
+    },
+    {
+      "path": "config/db/bazarr.db",
+      "purpose": "subtitle database (episodes, movies, history, wanted list)",
+      "created": "first start",
+      "growth": "grows with the size of the library",
+      "lifecycle": "managed by Bazarr; back it up before uninstalling with data removal"
+    },
+    {
+      "path": "config/cache",
+      "purpose": "cached provider responses and thumbnails",
+      "created": "first start",
+      "growth": "bounded by the cache settings",
+      "lifecycle": "safe to delete, rebuilt on demand"
+    },
+    {
+      "path": "config/log",
+      "purpose": "Bazarr log files",
+      "created": "first start",
+      "growth": "rotated by Bazarr",
+      "lifecycle": "safe to delete"
+    },
+    {
+      "path": "media",
+      "purpose": "optional place for media whose subtitles Bazarr should manage",
+      "created": "first start (empty)",
+      "growth": "only what you put there",
+      "lifecycle": "managed by you"
+    }
+  ],
+  "translations": {
+    "zh-cn": {
+      "descript": "Bazarr 是电影与剧集字幕管理器。它会读取你在 Sonarr / Radarr 里已有的片库，按你设定的语言自动查找匹配字幕并保持同步，支持强制字幕与听障字幕。本应用以非 root 容器运行 LinuxServer.io 的镜像，配置、数据库与日志都保存在应用数据目录中。",
+      "important": "需要 DockerEngine（缺失时应用中心会提示安装）。镜像安装时从 Docker Hub 拉取，无法直连请先配置镜像加速。打开后需连接 Sonarr / Radarr 与至少一个字幕源。Bazarr 会把字幕写到视频文件旁边，因此需要在 docker-compose.yml 里挂载媒体目录——TOS 的 Docker 应用默认访问不到共享文件夹。配置与数据库在应用数据目录，卸载并删除数据前请先备份。",
+      "release_note": "1. 首次发布：来自 LinuxServer.io Docker Hub 镜像的 Bazarr 1.6.2，以非 root 容器运行；配置、数据库与日志保存在应用数据目录。"
+    },
+    "zh-hk": {
+      "descript": "Bazarr 是電影與劇集字幕管理器。它會讀取你在 Sonarr / Radarr 裡已有的片庫，按你設定的語言自動尋找匹配字幕並保持同步，支援強制字幕與聽障字幕。本應用以非 root 容器執行 LinuxServer.io 的映像，設定、資料庫與日誌都保存在應用資料目錄中。",
+      "important": "需要 DockerEngine（缺少時應用中心會提示安裝）。映像安裝時從 Docker Hub 下載，無法直連請先設定映像加速。開啟後需連接 Sonarr / Radarr 與至少一個字幕來源。Bazarr 會把字幕寫到影片檔旁邊，因此需要在 docker-compose.yml 裡掛載媒體目錄——TOS 的 Docker 應用預設存取不到共享資料夾。設定與資料庫在應用資料目錄，解除安裝並刪除資料前請先備份。",
+      "release_note": "1. 首次發佈：來自 LinuxServer.io Docker Hub 映像的 Bazarr 1.6.2，以非 root 容器執行；設定、資料庫與日誌保存在應用資料目錄。"
+    }
+  },
+  "publisher": "Moechz",
+  "compose_project": "bazarrdocker",
+  "github_repo": "bazarr",
+  "release_tag_prefix": "v",
+  "docker_socket": false,
+  "group_add": [],
+  "host_port": 8006
+}
