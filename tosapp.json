@@ -48,7 +48,7 @@
   "official": "https://github.com/morpheus65535/bazarr",
   "help": "https://github.com/Moechz/bazarr/issues",
   "upstream_version": "1.6.2",
-  "version": "1.6.2-1",
+  "version": "1.6.2-2",
   "descript": "Bazarr is a subtitle manager for your movie and TV library. It watches the series and films you already track in Sonarr and Radarr, finds matching subtitles in your preferred languages, and keeps them in sync - including forced and hearing-impaired tracks. This package runs the LinuxServer.io Docker image as a non-root container and keeps the configuration, database and logs in the application data folder.",
   "important": "Requires DockerEngine (installed if missing); add a registry mirror if Docker Hub is unreachable. Open the app and connect Sonarr/Radarr plus at least one subtitle provider. Bazarr writes subtitles next to the video files, so its media folders must be mounted in docker-compose.yml - TOS Docker applications do not get access to shared folders by default. Settings and the database live in the application data folder; back it up before uninstalling with data removal.",
   "release_note": "1. First release: Bazarr 1.6.2 from the LinuxServer.io Docker Hub image, running as a non-root container. Configuration, database and logs are kept in the application data folder.",

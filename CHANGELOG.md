@@ -2,6 +2,11 @@
 
 All notable user-visible changes to the Bazarr TOS application package.
 
+## 1.6.2-2 — 2026-11-12
+
+### Changed
+- Icon: replaced the letter monogram with a functional vector mark that describes what the app does (the upstream project does not publish a compliant SVG).
+
 ## 1.6.2-1 — 2026-11-08
 
 ### Added
