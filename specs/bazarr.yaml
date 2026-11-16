@@ -1,6 +1,6 @@
 app_id: bazarrdocker
 title: Bazarr
-image: linuxserver/bazarr:1.6.2
+image: linuxserver/bazarr:v1.6.2-ls372
 repo_name: bazarr
 mode: wrapper
 entrypoint_file: src/entrypoint.sh
@@ -50,7 +50,7 @@ license: GPL-3.0
 official: https://github.com/morpheus65535/bazarr
 help: https://github.com/Moechz/bazarr/issues
 upstream_version: 1.6.2
-version: 1.6.2-1
+version: 1.6.2-5
 descript: Bazarr is a subtitle manager for your movie and TV library. It watches the series and films
   you already track in Sonarr and Radarr, finds matching subtitles in your preferred languages, and keeps
   them in sync - including forced and hearing-impaired tracks. This package runs the LinuxServer.io Docker
