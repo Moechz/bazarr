@@ -19,13 +19,13 @@ Each archive contains exactly:
 - `config.ini` — TOS application metadata (`application_type: docker`, id `bazarrdocker`)
 - `bazarrdocker.lang` — 23-language superset (TOS requires 14)
 - `bazarrdocker.svg` — application icon
-- `docker-compose.yml` — one service, image `linuxserver/bazarr:v1.6.2-ls372`
+- `docker-compose.yml` — one service, image `linuxserver/bazarr:v1.6.2-ls373`
 
 ## How it works
 
 | | |
 |---|---|
-| Container image | `linuxserver/bazarr:v1.6.2-ls372` (Docker Hub, used unmodified) |
+| Container image | `linuxserver/bazarr:v1.6.2-ls373` (Docker Hub, used unmodified) |
 | Open | `http://<NAS-IP>:8006/` (container port 6767) |
 | Runs as | non-root, `user: "1000:1000"` |
 | Persistent data | `/config` → `/Volume1/DockerAppData/bazarrdocker/config`, `/media` → `/Volume1/DockerAppData/bazarrdocker/media` |
@@ -52,6 +52,9 @@ analytics and no account.
 | Deletion channel | Delete the folder yourself at any time, or email **moechz@163.com** with the subject “Bazarr data deletion” and the request will be answered within 30 days. |
 | Security measures | Container runs as uid 1000 (never root), no `privileged`, no host network, no `cap_add`, no Docker socket, one published port. The image tag is fixed and updated when upstream ships security fixes. Do not expose the port to the internet without a TLS reverse proxy. |
 | Children | Not directed at children; the app processes media metadata only. |
+
+The package's `help` field opens that policy directly from the App Center entry
+(`config.ini` → `help` → the GitHub URL below).
 
 **Full privacy policy:** [PRIVACY.md](PRIVACY.md) in this repository —
 <https://github.com/Moechz/bazarr/blob/main/PRIVACY.md> — and the website version at
@@ -140,11 +143,11 @@ uninstall/reinstall data retention). The aarch64 archive differs only in
 ## Store submission checklist
 
 1. Public GitHub repo (code + README + NOTICE + LICENSE).
-2. Release tag `v1.6.2-5` with four assets: `bazarrdocker_{x86_64,aarch64}.tar.gz` and
+2. Release tag `v1.6.2-6` with four assets: `bazarrdocker_{x86_64,aarch64}.tar.gz` and
    their `.sha256` files.
 3. Developer platform → Add Application **twice**, same ID `bazarrdocker`:
    architecture `x86_64` and `aarch64`.
-4. In each application: Add Version `1.6.2-5` pointing at that architecture's archive.
+4. In each application: Add Version `1.6.2-6` pointing at that architecture's archive.
    Submission remarks: “Rectified per review comments” plus the privacy URL.
 
 ## Limitations

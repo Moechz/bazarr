@@ -1,7 +1,7 @@
 # ===========================================================================
 # Bazarr for TerraMaster TOS 7 (Docker application)
 # ===========================================================================
-# Upstream image : linuxserver/bazarr:v1.6.2-ls372 (Docker Hub, used unmodified)
+# Upstream image : linuxserver/bazarr:v1.6.2-ls373 (Docker Hub, used unmodified)
 #                  -> https://github.com/morpheus65535/bazarr
 #
 # Ports   : host 8006 -> container 6767. The host port is in the
@@ -31,7 +31,7 @@
 
 services:
   bazarrdocker:
-    image: linuxserver/bazarr:v1.6.2-ls372
+    image: linuxserver/bazarr:v1.6.2-ls373
     container_name: bazarrdocker
     restart: unless-stopped
     user: "1000:1000"

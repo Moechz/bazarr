@@ -1,7 +1,7 @@
 {
   "app_id": "bazarrdocker",
   "title": "Bazarr",
-  "image": "linuxserver/bazarr:v1.6.2-ls372",
+  "image": "linuxserver/bazarr:v1.6.2-ls373",
   "repo_name": "bazarr",
   "mode": "wrapper",
   "entrypoint_file": "src/entrypoint.sh",
@@ -46,16 +46,16 @@
   "upstream_license": "GPL-3.0",
   "license": "GPL-3.0",
   "official": "https://github.com/morpheus65535/bazarr",
-  "help": "https://github.com/Moechz/bazarr/issues",
+  "help": "https://github.com/Moechz/bazarr/blob/main/PRIVACY.md",
   "upstream_version": "1.6.2",
-  "version": "1.6.2-5",
+  "version": "1.6.2-6",
   "descript": "Bazarr is a subtitle manager for your movie and TV library. It watches the series and films you already track in Sonarr and Radarr, finds matching subtitles in your preferred languages, and keeps them in sync - including forced and hearing-impaired tracks. This package runs the LinuxServer.io Docker image as a non-root container and keeps the configuration, database and logs in the application data folder.",
   "important": "Requires DockerEngine (installed if missing); add a registry mirror if Docker Hub is unreachable. Open the app and connect Sonarr/Radarr plus at least one subtitle provider. Bazarr writes subtitles next to the video files, so its media folders must be mounted in docker-compose.yml - TOS Docker applications do not get access to shared folders by default. Settings and the database live in the application data folder; back it up before uninstalling with data removal.",
-  "release_note": "1. First release: Bazarr 1.6.2 from the LinuxServer.io Docker Hub image, running as a non-root container. Configuration, database and logs are kept in the application data folder.",
+  "release_note": "Review remediation: the package help field now opens the privacy policy, and the image is refreshed to the current LinuxServer.io build v1.6.2-ls373 (2026-11-18). PRIVACY.md, NOTICE.md and the README privacy / third-party / licence sections were added in 1.6.2-5. Unchanged: one service, port 8006 to 6767, non-root 1000:1000, data under DockerAppData/bazarrdocker.",
   "data_notes": "`config/` holds everything Bazarr persists: `config/config.yaml` (settings, API keys, Sonarr/Radarr and provider connections), `db/bazarr.db` (the subtitle database), `cache/` and `log/`. `media/` is the place mounted as `/media` inside the container: point Bazarr's series/movie folders there, or edit docker-compose.yml to mount your own media share after installation.",
   "design_notes": [
     "**Non-root by construction.** The s6 service manager of the image needs root, so the wrapper starts Bazarr directly as `1000:1000`; verified on real hardware with `id` inside the container.",
-    "**Fixed image tag `1.6.2`**, Docker Hub only, no `privileged`, no `network_mode: host`, no `cap_add`, no Docker socket.",
+    "**Fixed image tag `v1.6.2-ls373`**, Docker Hub only, no `privileged`, no `network_mode: host`, no `cap_add`, no Docker socket.",
     "**Health check** on the UI itself (`GET /` on port 6767) with a 90 s start period for the first start."
   ],
   "limitations": [
@@ -104,12 +104,12 @@
     "zh-cn": {
       "descript": "Bazarr 是电影与剧集字幕管理器。它会读取你在 Sonarr / Radarr 里已有的片库，按你设定的语言自动查找匹配字幕并保持同步，支持强制字幕与听障字幕。本应用以非 root 容器运行 LinuxServer.io 的镜像，配置、数据库与日志都保存在应用数据目录中。",
       "important": "需要 DockerEngine（缺失时应用中心会提示安装）。镜像安装时从 Docker Hub 拉取，无法直连请先配置镜像加速。打开后需连接 Sonarr / Radarr 与至少一个字幕源。Bazarr 会把字幕写到视频文件旁边，因此需要在 docker-compose.yml 里挂载媒体目录——TOS 的 Docker 应用默认访问不到共享文件夹。配置与数据库在应用数据目录，卸载并删除数据前请先备份。",
-      "release_note": "1. 首次发布：来自 LinuxServer.io Docker Hub 镜像的 Bazarr 1.6.2，以非 root 容器运行；配置、数据库与日志保存在应用数据目录。"
+      "release_note": "审核整改：包内 help 字段改为直接打开隐私政策，镜像刷新到 LinuxServer.io 最新构建 v1.6.2-ls373（2026-11-18）。隐私政策、NOTICE 与 README 的隐私/第三方/许可章节见 1.6.2-5。结构不变：单服务、8006→6767、非 root 1000:1000、数据在 DockerAppData/bazarrdocker。"
     },
     "zh-hk": {
       "descript": "Bazarr 是電影與劇集字幕管理器。它會讀取你在 Sonarr / Radarr 裡已有的片庫，按你設定的語言自動尋找匹配字幕並保持同步，支援強制字幕與聽障字幕。本應用以非 root 容器執行 LinuxServer.io 的映像，設定、資料庫與日誌都保存在應用資料目錄中。",
       "important": "需要 DockerEngine（缺少時應用中心會提示安裝）。映像安裝時從 Docker Hub 下載，無法直連請先設定映像加速。開啟後需連接 Sonarr / Radarr 與至少一個字幕來源。Bazarr 會把字幕寫到影片檔旁邊，因此需要在 docker-compose.yml 裡掛載媒體目錄——TOS 的 Docker 應用預設存取不到共享資料夾。設定與資料庫在應用資料目錄，解除安裝並刪除資料前請先備份。",
-      "release_note": "1. 首次發佈：來自 LinuxServer.io Docker Hub 映像的 Bazarr 1.6.2，以非 root 容器執行；設定、資料庫與日誌保存在應用資料目錄。"
+      "release_note": "審核整改：包內 help 欄位改為直接開啟隱私政策，映像刷新到 LinuxServer.io 最新建置 v1.6.2-ls373（2026-11-18）。隱私政策、NOTICE 與 README 的隱私/第三方/授權章節見 1.6.2-5。結構不變：單服務、8006→6767、非 root 1000:1000、資料在 DockerAppData/bazarrdocker。"
     }
   },
   "publisher": "Moechz",

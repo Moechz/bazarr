@@ -2,6 +2,23 @@
 
 All notable user-visible changes to the Bazarr TOS application package.
 
+## 1.6.2-6 — 2026-11-18
+
+### Changed
+- `help` in `config.ini` now opens the privacy policy, so the App Center entry reaches it
+  directly (review items C3/C5).
+- Image refreshed to `linuxserver/bazarr:v1.6.2-ls373` (current LinuxServer.io build,
+  released 2026-11-18; base packages updated — review item T1).
+- README documents the `help` link and points at `NOTICE.md`.
+
+### Removed
+- The 6 MB `TOSAppSelfTestingTool` binary is no longer tracked in the public repository.
+
+> `1.6.2-2` was rejected for V7 (checksum) and F1/F2/F6/F7 (install/start/port/UI). The
+> checksum in the report is the digest of the published asset itself, and the report's own
+> verification summary records a successful install and start-up; see
+> `docs/REVIEW-REPLY-1.6.2-6.md`.
+
 ## 1.6.2-5 — 2026-11-17
 
 ### Changed
